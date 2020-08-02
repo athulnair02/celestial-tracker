@@ -1,1 +1,1 @@
-# CelestialTracker
+# celestial-tracker
