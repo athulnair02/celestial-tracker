@@ -10,11 +10,15 @@ import bs4
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup as soup
 import time
+import argparse
 
+parser = argparse.ArgumentParser(description="Get information on required celestial object.")
+parser.add_argument('celestialObject', help='Which celestial object to look at.', type=str)
+
+args = parser.parse_args()
+celestialObject = args.celestialObject
 
 # In[2]:
-
-
 class CelestialBody:
     lastUpdate = time.localtime()
     
@@ -42,8 +46,6 @@ class CelestialBody:
 
 # In[3]:
 
-
-#celestialBodies = []
 celestialBodiesDict = {}
 
 
@@ -76,16 +78,15 @@ def reloadBodies():
         info = info[0:info.index('Mag')]
         ra = info[info.index(':')+1 : info.index('s')+1]
         dec = info[info.index('Dec')+4:]
-        #celestialBodies.append(CelestialBody(name, ra, dec))
         celestialBodiesDict[name] = CelestialBody(name, ra, dec)
     CelestialBody.lastUpdate = time.localtime()
-    return celestialBodiesDict ###CHANGE
+    return celestialBodiesDict 
 
 
 # In[5]:
 
 
-celestialBodiesDict = reloadBodies() ###CHange
+celestialBodiesDict = reloadBodies() 
 for body in celestialBodiesDict:
     print(celestialBodiesDict[body].displayInfo())
 CelestialBody.displayLastUpdate()
@@ -343,17 +344,11 @@ def getCelestialAltAz(celestialName):
     return (altitude, azimuth, body.name)
 
 
-# In[14]:
-
-
-driver.quit()
-
-
 # In[18]:
 
 
-getCelestialAltAz('mars')
-
+getCelestialAltAz(celestialObject)
+driver.quit()
 
 # In[ ]:
 
